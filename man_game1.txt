@@ -1,0 +1,40 @@
+About the game:
+
+
+This game will take you through the world of kinematics. 
+In this game, we will see all the possible cases of 
+linear motion, ie, motion in one dimension.  
+All the fundamental equations of kinematics are analyzed 
+in the given game and the resultant motion is shown 
+through simple yet exciting animation.
+
+
+How to Play:
+
+
+1.Start SimPhy.
+
+2.Click on the first Game, ie, Linear Motion.
+3.The game will ask user to select the parameter whose value 
+  is to be calculated. Click on the required button.
+4.The game will now ask the user to select the formula that 
+  you wish to use for calculating the above parameter.
+5.Input the values of the various parameters and then press Enter.
+6.The game will now ask the user to select the type of Road. 
+   Select the Road.
+7.The game will now ask the user to select the type of vehicle. 
+   Select the vehicle.
+8.The resulting motion of the vehicle can now be seen with the 
+   value of the required parameter.
+9.Click on Play Again to try out some different values of 
+  various parameters.
+
+
+
+
+
+
+
+
+
+
