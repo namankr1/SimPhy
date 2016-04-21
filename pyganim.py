@@ -184,7 +184,7 @@ class PygAnimation(object):
     def makeTransformsPermanent(self):
         self._images = [pygame.Surface(surfObj.get_size(), 0, surfObj) for surfObj in self._transformedImages]
         for i in range(len(self._transformedImages)):
-            self._images[i].blit(self._transformedImages[i], (0,0))
+            self._images[i].blit(self._transformedImages[i], (0, 0))
 
     def blitFrameNum(self, frameNum, destSurface, dest):
         # Draws the specified frame of the animation object. This ignores the

@@ -1,14 +1,16 @@
 '''
  First multi-line comments
- function get_key() : 	because of this fuction we were unable to close the game on the screen where we enter data
+ function get_key() : 	because of this fuction we were unable to close the game on the DISPLAY_SURF where we enter data
  						as it contains an infinite loop which goes on till a key is pressed(not just mouse click)
  						and mouse click is not a key event so it is undetected .Adding pygame.QUIT part in this function
  						solves the problem
 '''
 import pygame, pygame.font, pygame.event, pygame.draw, string
 from pygame.locals import *
-from errorScreen import errorScreen
+import errorScreen
 import pyganim
+from const_colors import *
+
 
 def get_key():
 	while True:
@@ -21,21 +23,26 @@ def get_key():
 		else:
 			pass
 			
-def display_box(screen,countIn, message):
-	"Print a message in a box in the middle of the screen"
-	fontobject = pygame.font.Font(None,18)
-	pygame.draw.rect(screen, (75,100,200),(30,countIn*10,200,20), 0)
-	pygame.draw.rect(screen, (255,255,255),(28,countIn*10-2,204,24), 1)
+def display_box(DISPLAY_SURF,countIn, message):
+	"Print a message in a box in the middle of the DISPLAY_SURF"
+	fontobject = pygame.font.Font("./fonts/comic.ttf",17)
+
+	#pygame.draw.rect(DISPLAY_SURF, (75,100,200),(30,countIn*10,200,20), 0)
+	#pygame.draw.rect(DISPLAY_SURF, (255,255,255),(28,countIn*10-2,204,24), 1)
+	inputbox = pygame.image.load('Images/input_parameters.png') 	
+	DISPLAY_SURF.blit(inputbox,(20,10 + countIn*15))
+
 	if len(message) != 0:
-		screen.blit(fontobject.render(message, 1, (255,255,255)),(30, countIn*10))
+		DISPLAY_SURF.blit(fontobject.render(message, 1, BLACK),(36,26 + countIn*15))
 	pygame.display.flip()
 	
-def ask(screen, question,countIn):
+def ask(DISPLAY_SURF, question,countIn):
+	print "inside inputbox"
 	try:
-		"ask(screen, question) -> answer"
+		"ask(DISPLAY_SURF, question) -> answer"
 		pygame.font.init()
 		current_string = []
-		display_box(screen,countIn, question + ": " + "".join(current_string))
+		display_box(DISPLAY_SURF,countIn, question + ": " + "".join(current_string))
 		#print "now enter"
 		while True:
 			mouse = pygame.mouse.get_pos()
@@ -55,16 +62,17 @@ def ask(screen, question,countIn):
 					current_string.append("-")
 			elif inkey <= 127:
 				current_string.append(chr(inkey))
-			display_box(screen, countIn,question + ": " + "".join(current_string))
+			display_box(DISPLAY_SURF, countIn,question + ": " + "".join(current_string))
 		return "".join(current_string)
 	except :
 		print ("error in getting input")
-		errorScreen(screen,"Error in getting "+question)
+		errorScreen.errorScreen(DISPLAY_SURF,"Error in getting "+question)
 		return
 		
-def ask_parallel(screen,question,road_val,numImages,path1,path2):
+def ask_parallel(DISPLAY_SURF,question,road_val,numImages,path1,path2):
+	print "inside asl parallel of inputbox"
 	current_string = []
-	display_box(screen,6, question + ": " + "".join(current_string))
+	display_box(DISPLAY_SURF,0, question + ": " + "".join(current_string))
 	i = 1
 	j=numImages+1
 	k = 0
@@ -139,9 +147,10 @@ def ask_parallel(screen,question,road_val,numImages,path1,path2):
 					current_string.append("-")
 			elif inkey <= 127:
 				current_string.append(chr(inkey))
-		display_box(screen, 6,question + ": " + "".join(current_string))
+				
+		display_box(DISPLAY_SURF, 0,question + ": " + "".join(current_string))
 		if ask:
-			print ""
+			print ("")
 		elif i+j<=numImages+1:
 			return "".join(current_string),boltAnim1,boltAnim2
 	

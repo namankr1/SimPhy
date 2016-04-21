@@ -2,23 +2,26 @@ import pygame
 import sys
 from Button import Button
 from pygame.locals import *
+from constants import *
 import VbyNLM
 import TbyNLM
 import UbyNLM
 import AbyNLM
 import SbyNLM
 
-def startGame1(DISPLAYSURF):				# defining a fuction, this is how it is done in python
-	btn = Button('Final Vel,v')
-	btn2 = Button('Time, t')
-	btn3 = Button('In. Vel, u')
-	btn4 = Button('Accn., a')
-	btn5 = Button('Disp, s')
+def startGame1(DISPLAY_SURF):				# defining a fuction, this is how it is done in python
+
+	btn_final_velocity =  pygame.image.load('Images/buttons/final_velocity.png') 
+	btn_time =  pygame.image.load('Images/buttons/time.png') 
+	btn_initial_velocity =  pygame.image.load('Images/buttons/initial_velocity.png') 
+	btn_acceleration =  pygame.image.load('Images/buttons/acceleration.png') 
+	btn_displacement =  pygame.image.load('Images/buttons/displacement.png') 
 	clock = pygame.time.Clock()
-	background=pygame.image.load('Images/game1.jpg')
+	#background=pygame.image.load('Images/game1/physics.png')
+	background=pygame.image.load('Images/game1Back.png')
 	run = True
 	while run:
-		DISPLAYSURF.blit(background,(0,0))
+		DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 		mouse = pygame.mouse.get_pos()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -26,20 +29,22 @@ def startGame1(DISPLAYSURF):				# defining a fuction, this is how it is done in 
 				pygame.quit()
 				sys.exit()
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				if btn.obj.collidepoint(mouse):
-					VbyNLM.compVbyNLM(DISPLAYSURF)
-				elif btn2.obj.collidepoint(mouse):
-					TbyNLM.compTbyNLM(DISPLAYSURF)
-				elif btn3.obj.collidepoint(mouse):
-					UbyNLM.compUbyNLM(DISPLAYSURF)
-				elif btn4.obj.collidepoint(mouse):
-					AbyNLM.compAbyNLM(DISPLAYSURF)
-				elif btn5.obj.collidepoint(mouse):
-					SbyNLM.compSbyNLM(DISPLAYSURF)
-		btn.draw(DISPLAYSURF, mouse, (100,100,100,20), (125,103))
-		btn2.draw(DISPLAYSURF, mouse, (100,130,100,20), (125,133))
-		btn3.draw(DISPLAYSURF, mouse, (100,160,100,20), (125,163))
-		btn4.draw(DISPLAYSURF, mouse, (100,190,100,20), (125,193))
-		btn5.draw(DISPLAYSURF, mouse, (100,220,100,20), (125,223))
+				if rect_final_velocity.collidepoint(mouse):
+					VbyNLM.compVbyNLM(DISPLAY_SURF)
+				elif rect_time.collidepoint(mouse):
+					TbyNLM.compTbyNLM(DISPLAY_SURF)
+				elif rect_initial_velocity.collidepoint(mouse):
+					UbyNLM.compUbyNLM(DISPLAY_SURF)
+				elif rect_acceleration.collidepoint(mouse):
+					AbyNLM.compAbyNLM(DISPLAY_SURF)
+				elif rect_displacement.collidepoint(mouse):
+					SbyNLM.compSbyNLM(DISPLAY_SURF)
+
+		rect_final_velocity = DISPLAY_SURF.blit(btn_final_velocity,(125,103))
+		rect_initial_velocity = DISPLAY_SURF.blit(btn_initial_velocity,(125,143))
+		rect_time = DISPLAY_SURF.blit(btn_time,(125,183))
+		rect_acceleration = DISPLAY_SURF.blit(btn_acceleration,(125,223))
+		rect_displacement = DISPLAY_SURF.blit(btn_displacement,(125,263))
+		
 		pygame.display.update()
 		clock.tick(60)

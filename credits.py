@@ -2,29 +2,25 @@ import pygame
 import sys
 from pygame.locals import *
 
-def credits(screen):
-	file_name = open("dev_credits.txt")
-	screen.fill((15,15,15))
+def credits(DISPLAY_SURF):
+	background1 = pygame.image.load('Images/credits.jpg')
+	btn_home = pygame.image.load('Images/buttons/home.png')
 	pygame.display.update()
-	string =  file_name.read()
-	array = string.splitlines();
-	fontObj =pygame.font.SysFont("monospace", 15)
-	textSurfaceObj=["a" for i in range(26)]
-	for i in range(26):
-		textSurfaceObj[i] = fontObj.render(array[i],True,(255,255,255))
 	run = True
 	while run:
-		for i in range(26):
-			textSurfaceObj[i] = fontObj.render(array[i],True,(255,255,255))
-			screen.blit(textSurfaceObj[i],(10,i*18+10))
-			pygame.display.update()
 		mouse = pygame.mouse.get_pos()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				run = False
 				pygame.quit()
 				sys.exit()
-			if event.type == KEYDOWN:
+			elif event.type == KEYDOWN:
 				inkey = event.key
 				if inkey == K_ESCAPE :
 					run = False
+			elif event.type == pygame.MOUSEBUTTONDOWN:
+				if rect_home.collidepoint(mouse):
+					run = False
+		DISPLAY_SURF.blit(background1,(0,0))
+		rect_home= DISPLAY_SURF.blit(btn_home,(550,10))
+		pygame.display.update()

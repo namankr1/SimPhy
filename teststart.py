@@ -8,49 +8,54 @@ import pyganim
 import credits
 from Button import Button
 from pygame.locals import *
+from constants import *
+from const_colors import *
 
-def start(DISPLAYSURF):
+def start(DISPLAY_SURF):
 
 	background = pygame.image.load('Images/simphy.jpg')
-	btn = Button('Start')
-	btn.setColor((255,0,0))
-	btn.setHoverColor((0,255,0))
-	btn.setFontColor((0,0,255))
-	btn2 = Button('Credits')
-	btn2.setColor((255,0,0))
-	btn2.setHoverColor((0,255,0))
-	btn2.setFontColor((0,0,255))
-	btn3 = Button('Manual')
-	btn3.setColor((255,0,0))
-	btn3.setHoverColor((0,255,0))
-	btn3.setFontColor((0,0,255))
+	btn_start = pygame.image.load('Images/buttons/playbutton.png') 	
+	btn_credits = pygame.image.load('Images/buttons/creditsbutton.png') 
+	btn_manual = pygame.image.load('Images/buttons/manualbutton.png') 
+
 	clock = pygame.time.Clock()
 # background=pygame.image.load('Images/simphy.jpg')
 	run = True
-	DISPLAYSURF = pygame.display.set_mode((600,400), 0, 32)
+	DISPLAY_SURF = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), 0, 32)
 # create the animation objects   ('filename of image',    duration_in_seconds)
 	boltAnim = pyganim.PygAnimation([('Images/simphyimages/s.jpg', 0.2),('Images/simphyimages/m.jpg', 0.2),('Images/simphyimages/p.jpg', 0.2),('Images/simphyimages/h.jpg', 0.2),('Images/simphyimages/y.jpg', 0.2),('Images/simphyimages/notzoom.jpg',0.2),('Images/simphyimages/allzoom.jpg', 0.2),])
 	boltAnim.play();
 	
 	while run:
-		DISPLAYSURF.blit(background,(0,0))
+		DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 		mouse = pygame.mouse.get_pos()
+	
+
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				run = False
 				pygame.quit()
 				sys.exit(0)
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				if btn.obj.collidepoint(mouse):
-					demo.startGame(DISPLAYSURF)		
-				elif btn2.obj.collidepoint(mouse):
-					credits.credits(DISPLAYSURF)
-				elif btn3.obj.collidepoint(mouse):
-					manual.manual(DISPLAYSURF)	     
-		boltAnim.blit(DISPLAYSURF, (0, 0))
-		btn.draw(DISPLAYSURF, mouse, (200,200,200,40), (225,203),40)
-		btn2.draw(DISPLAYSURF, mouse, (200,250,200,40), (225,253),40)
-		btn3.draw(DISPLAYSURF, mouse, (200,300,200,40), (225,303),40)
+				if rect_start.collidepoint(mouse):
+					demo.startGame(DISPLAY_SURF)		
+				elif rect_credits.collidepoint(mouse):
+					credits.credits(DISPLAY_SURF)
+				elif rect_manual.collidepoint(mouse):
+					manual.manual(DISPLAY_SURF)	     
+				#elif btn.obj.collidepoint(mouse):
+				#	manual.manual(DISPLAY_SURF)	
+		boltAnim.blit(DISPLAY_SURF, (0, 0))
+		rect_start = DISPLAY_SURF.blit(btn_start,(210,185))
+		rect_credits = DISPLAY_SURF.blit(btn_credits,(210,250))
+		rect_manual = DISPLAY_SURF.blit(btn_manual,(210,315))
+		
 		pygame.display.update()
 		clock.tick(60)
 
+#main starts
+if __name__ == "__main__":
+	DISPLAY_SURF = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), 0, 32)
+	pygame.init()
+	
+	start(DISPLAY_SURF)

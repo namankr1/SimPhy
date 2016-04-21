@@ -3,51 +3,57 @@ import sys
 import inputbox
 from Button import Button
 from animation2 import animation2
-from errorScreen import errorScreen
+import errorScreen
 from endScreen import endScreen
+from constants import *
 from pygame.locals import *
 
-def startGame2(DISPLAYSURF):
-	btn = Button('Start')
+def startGame2(DISPLAY_SURF):
+	print ("INSIDE GAME2.py")
+	btn_start = pygame.image.load('Images/buttons/start.png')
 
 	clock = pygame.time.Clock()
 	background=pygame.image.load('Images/game2/1.png')
 	run = True
 	while run:
-		DISPLAYSURF.blit(background,(0,0))
+		DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 		mouse = pygame.mouse.get_pos()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				run = False
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				if btn.obj.collidepoint(mouse):
-					countInputs=1;
+				if rect_start.collidepoint(mouse):
+					countInputs = 1;
 											
-					m1 = inputbox.ask(DISPLAYSURF, "Mass, M",countInputs)
-					m2 = float (m1)
-					countInputs=countInputs+5;
-					u1 = inputbox.ask(DISPLAYSURF, "Coefficient of Friction, u",countInputs)
-					u2 = float (u1)
-					if u2 > 1 :
-						errorScreen(DISPLAYSURF,"Invalid coeff. of friction")
-					if u2 < 0 :
-						errorScreen(DISPLAYSURF,"Invalid coeff. of friction")
-					countInputs=countInputs+5;
-					f1 = inputbox.ask(DISPLAYSURF, "Force, F",countInputs)
-					f2 = float (f1)
-					v1 = u2 * f2
-					W = m2 * 9.8
+					mass = inputbox.ask(DISPLAY_SURF, "Mass, M",countInputs)
+					mass = float (mass)
+					if mass <= 0 :
+						errorScreen.errorScreen(DISPLAY_SURF,"Mass must be Positve")
+					countInputs = countInputs + 5;
+					initial_velocity = inputbox.ask(DISPLAY_SURF, "Coeff. of Friction, u",countInputs)
+					initial_velocity = float (initial_velocity)
+					if initial_velocity > 1 :
+						errorScreen.errorScreen(DISPLAY_SURF,"Invalid coeff. of friction")
+					if initial_velocity < 0 :
+						errorScreen.errorScreen(DISPLAY_SURF,"Invalid coeff. of friction")
+					countInputs = countInputs + 5;
+					force = inputbox.ask(DISPLAY_SURF, "Force, F",countInputs)
+					force = float (force)
+					final_velocity = initial_velocity * force
+					weight = mass * 9.8
 						
-					if ( W > v1):
+					if ( weight > final_velocity):
 						font = pygame.font.Font(None, 36)
 						text = font.render("The block will fall down.", 1, (10, 10, 10))
-						animation2(DISPLAYSURF,'down',text)
+						animation2(DISPLAY_SURF,'down',text)
 					else:
-						res=pygame.image.load('Images/game2/5.png')
-						DISPLAYSURF.blit(res,(0,0))
-						endScreen(DISPLAYSURF,":)")
+						res = pygame.image.load('Images/game2/5.png')
+						DISPLAY_SURF.blit(res,SCREEN_TOPLEFT)
+						endScreen(DISPLAY_SURF,":)")
 					
-		btn.draw(DISPLAYSURF, mouse, (200,300,100,20), (225,303))
+		rect_start = DISPLAY_SURF.blit(btn_start ,(220,303))
+
+		
 
 		pygame.display.update()
 		clock.tick(60)

@@ -3,13 +3,15 @@ import sys
 from Button import Button
 from pygame.locals import *
 
-def manual(screen):
+def manual(DISPLAY_SURF):
 	file_name = open("man_game1.txt")
-	screen.fill((15,15,15))
+	btn_home = pygame.image.load('Images/buttons/home.png')
+	btn_up = pygame.image.load('Images/buttons/up.png')
+	btn_down = pygame.image.load('Images/buttons/down.png')
+	btn_top1 = pygame.image.load('Images/buttons/top.png')
+	DISPLAY_SURF.fill((0,0,200))
 	pygame.display.update()
-	btn_up = Button('Up')
 	btn_top = Button('Top')
-	btn_down = Button('Down')
 	pos=[0 for i in range(40)]
 	for i in range(40):
 		pos[i] = i*15 + 40
@@ -37,7 +39,7 @@ def manual(screen):
 				if inkey == K_ESCAPE :
 					run = False
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				if btn_up.obj.collidepoint(mouse):
+				if rect_up.collidepoint(mouse):
 					posCons+=15
 					if posCons >40:
 						posCons = 40
@@ -47,7 +49,7 @@ def manual(screen):
 							pos[i] = 400
 						if pos[i] < 30:
 							pos[i] = -30
-				elif btn_down.obj.collidepoint(mouse):
+				elif rect_down.collidepoint(mouse):
 					posCons-=15
 					if posCons + 40*15 < 360:
 						posCons +=15
@@ -57,7 +59,7 @@ def manual(screen):
 							pos[i] = 400
 						if pos[i] < 30:
 							pos[i] = -30
-				elif btn_top.obj.collidepoint(mouse):
+				elif rect_top1.collidepoint(mouse):
 					posCons = 40
 					for i in range(40):
 						pos[i] = i*15 +posCons
@@ -65,17 +67,21 @@ def manual(screen):
 							pos[i] = 400
 						if pos[i] < 30:
 							pos[i] = -30
-				screen.fill((15,15,15))
+				elif rect_home.collidepoint(mouse):
+					run = False
+				DISPLAY_SURF.fill((0,0,200))
 				for i in range(30):
 					textSurfaceObj[i] = fontObj.render(array[i],True,(255,255,255))
-					screen.blit(textSurfaceObj[i],(10,pos[i]))
+					DISPLAY_SURF.blit(textSurfaceObj[i],(10,pos[i]))
 
 			else:
 				for i in range(30):
 					textSurfaceObj[i] = fontObj.render(array[i],True,(255,255,255))
-					screen.blit(textSurfaceObj[i],(10,pos[i]))
-		btn_up.draw(screen, mouse, (150,5,40,20), (160,8))
-		btn_top.draw(screen,mouse,(200,5,40,20),(210,8))
-		btn_down.draw(screen, mouse, (150,370,40,20), (153,373))
+					DISPLAY_SURF.blit(textSurfaceObj[i],(10,pos[i]))
+		#btn_top.draw(DISPLAY_SURF,mouse,(200,5,40,20),(210,8))
+		rect_home= DISPLAY_SURF.blit(btn_home,(550,10))
+		rect_up = DISPLAY_SURF.blit(btn_up ,(10,10))
+		rect_down = DISPLAY_SURF.blit(btn_down,(50,10))
+		rect_top1 = DISPLAY_SURF.blit(btn_top1,(200,10))
 		pygame.display.update()
 		

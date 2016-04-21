@@ -2,24 +2,25 @@ import pygame
 import os
 import sys
 import inputbox
-from errorScreen import errorScreen
+import errorScreen
 from pygame.locals import *
+from const_colors import *
 
 
 class animation:
-	def __init__(self,screen,direction,text):
+	def __init__(self,DISPLAY_SURF,direction,text):
 		FPS = 30
 		fpsClock = pygame.time.Clock()
 		SCREEN_WIDTH = 600
-		screen = pygame.display.set_mode((SCREEN_WIDTH,400), 0, 32)
+		DISPLAY_SURF = pygame.display.set_mode((SCREEN_WIDTH,400), 0, 32)
 		pygame.display.set_caption('Animation')
-		WHITE = (255, 255, 255)
-		RED = (255,0,0)
+		WHITE = WHITE
+		RED = RED
 		catImg = pygame.image.load('Images/game4/block.png')
 		cloud = pygame.image.load('Images/game4/cloudf.png')
 		tree = pygame.image.load('Images/game4/tree.png')
 		background = pygame.image.load('Images/game4/background.png')
-		screen.blit(background,(0,0))
+		DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 		treex=370
 		treey = 0
 		catx = 0
@@ -41,7 +42,7 @@ class animation:
 
 
 		while True :			#main game loop
-			screen.blit(background,(0,0))
+			DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 			textRectObj.center = (centerx,cloudy)
 			
 
@@ -55,14 +56,14 @@ class animation:
 					cloudx -= 5
 					centerx -= 5
 					textRectObj.center = (centerx,50)
-					screen.blit(textSurfaceObj,textRectObj)		
-					screen.blit(cloud,(cloudx,cloudy))
+					DISPLAY_SURF.blit(textSurfaceObj,textRectObj)		
+					DISPLAY_SURF.blit(cloud,(cloudx,cloudy))
 					catx += 5
 					treex += 5
 					if catx > 580:
-						errorScreen(screen,"Block went to Infinity")
-				screen.blit(catImg, (catx,caty))
-				screen.blit(tree, (treex,treey))
+						errorScreen.errorScreen(DISPLAY_SURF,"Block went to Infinity")
+				DISPLAY_SURF.blit(catImg, (catx,caty))
+				DISPLAY_SURF.blit(tree, (treex,treey))
 				if treex < -tree.get_width() - 10:
 					treex = SCREEN_WIDTH + 20
 					countTrees += 1
@@ -71,9 +72,9 @@ class animation:
 				if catx > 500 :
 					catx = 0
 					pygame.time.wait(700)			# pause for 700 mili seconds
-					errorScreen(screen,"Block went to -ve infinfity")
-				screen.blit(catImg, (catx,caty))
-				screen.blit(tree, (treex,treey))
+					errorScreen.errorScreen(DISPLAY_SURF,"Block went to -ve infinfity")
+				DISPLAY_SURF.blit(catImg, (catx,caty))
+				DISPLAY_SURF.blit(tree, (treex,treey))
 			for event in pygame.event.get():
 				if event.type == QUIT:
 					pygame.quit()

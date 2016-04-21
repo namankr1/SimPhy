@@ -1,19 +1,20 @@
 import pygame
 import sys
 import inputbox
-from endScreen import endScreen
+from game2_ending import game2_ending
 from pygame.locals import *
+from const_colors import *
+from constants import *
 
 class animation2:
-	def __init__(self,screen,direction,text):
+	def __init__(self,DISPLAY_SURF,direction,text):
 		FPS = 30
 		fpsClock = pygame.time.Clock()
-		screen = pygame.display.set_mode((600,400), 0, 32)
+		DISPLAY_SURF = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), 0, 32)
 		pygame.display.set_caption('Animation')
-		WHITE = (255, 255, 255)
 		block = pygame.image.load('Images/game2/3.png')
 		background = pygame.image.load('Images/game2/4.png')
-		screen.blit(background,(0,0))
+		DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 		blockx = 267
 		blocky = 0
 		textpos = text.get_rect()
@@ -21,12 +22,12 @@ class animation2:
 		textpos.y = 350
 		background.blit(text, textpos)
 		while True :			#main game loop
-			screen.blit(background,(0,0))
+			DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 			if direction == 'down':
 				blocky += 5
-			if blocky>450 :
-				endScreen(screen,"Oops.. The block fell down !")
-			screen.blit(block, (blockx,blocky))
+			if blocky > 450 :
+				game2_ending(DISPLAY_SURF,"Oops.. The block fell down !")
+			DISPLAY_SURF.blit(block, (blockx,blocky))
 			for event in pygame.event.get():
 				if event.type == QUIT:
 					pygame.quit()

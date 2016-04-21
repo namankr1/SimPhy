@@ -6,7 +6,7 @@ import inputbox
 import teststart
 
 class endScreen:
-	def __init__(self, screen,text):
+	def __init__(self, DISPLAY_SURF,text):
 		pygame.font.init()
 		fontobject = pygame.font.Font(None,18)
 		if pygame.mixer.music.get_busy():
@@ -14,8 +14,9 @@ class endScreen:
 		pygame.mixer.music.load('Sound/bomb.ogg')
 		pygame.mixer.music.play(-1, 0.0)
 		if len(text) != 0:
-			btnReplay = Button('  Play Again ?')
-			btnExit = Button('          Exit' )
+			btn_replay = pygame.image.load('Images/buttons/playagain.png')
+			btn_exit = pygame.image.load('Images/buttons/exitbutton.png')
+
 			clock = pygame.time.Clock()
 			run1= True;
 			while run1:
@@ -28,19 +29,19 @@ class endScreen:
 						pygame.quit()
 						sys.exit()
 					elif event.type == pygame.MOUSEBUTTONDOWN:
-						if btnReplay.obj.collidepoint(mouse):
+						if rect_replay.collidepoint(mouse):
 							if pygame.mixer.music.get_busy():
 								pygame.mixer.music.stop()
 							print ("restart")
-							teststart.start(screen)
-						elif btnExit.obj.collidepoint(mouse):
+							teststart.start(DISPLAY_SURF)
+						elif rect_exit.collidepoint(mouse):
 							if pygame.mixer.music.get_busy():
 								pygame.mixer.music.stop()
 							print ("exit")
 							run1 = False
 							pygame.quit()
 							sys.exit()
-				btnReplay.draw(screen, mouse, (150,(screen.get_height()-100),100,20), (150,(screen.get_height()-100)))
-				btnExit.draw(screen, mouse, (300,(screen.get_height()-100),100,20), (300,(screen.get_height()-100)))
+				rect_replay = DISPLAY_SURF.blit(btn_replay ,(130,(DISPLAY_SURF.get_height()-100)))
+				rect_exit = DISPLAY_SURF.blit(btn_exit,(320,(DISPLAY_SURF.get_height()-100)))
 				pygame.display.update()
 				clock.tick(60)

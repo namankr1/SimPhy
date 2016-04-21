@@ -28,10 +28,10 @@ class Button:
 			return self.hover_color
 		else:
 			return self.default_color
-	def draw(self, screen, mouse, rectcoord, labelcoord,font_size=20):
+	def draw(self, DISPLAY_SURF, mouse, rectcoord, labelcoord,font_size=20):
 		'''create rect obj, draw, and change color based on input'''
-		self.obj  = pygame.draw.rect(screen, self.color(), rectcoord)
-		screen.blit(self.label(font_size), labelcoord)
+		self.obj  = pygame.draw.rect(DISPLAY_SURF, self.color(), rectcoord)
+		DISPLAY_SURF.blit(self.label(font_size), labelcoord)
 		self.check_hover(mouse)
 	
 	def check_hover(self, mouse):

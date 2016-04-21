@@ -3,26 +3,29 @@ import sys
 import inputbox
 from Button import Button
 from anim1 import *
-from errorScreen import errorScreen
+import errorScreen
 from pygame.locals import *
+from const_colors import *
 import math
 
-def compTbyNLM(DISPLAYSURF):
-	btn1 = Button('T by v,a,u')
-	btn2 = Button('T by s,a,u')
-	btn3 = Button('T by v,s,u')
-	btn4 = Button('T by v,a,s')
+def compTbyNLM(DISPLAY_SURF):
+
+	btn_t1 = pygame.image.load('Images/buttons/parameters/t1.png') 	
+	btn_t2 = pygame.image.load('Images/buttons/parameters/t2.png') 
+	btn_t3 = pygame.image.load('Images/buttons/parameters/t3.png') 
+	btn_t4 = pygame.image.load('Images/buttons/parameters/t4.png') 
+
 	btn_back = Button('Back')
-	btn_back.setColor((255,0,0))
-	btn_back.setHoverColor((0,255,0))
-	btn_back.setFontColor((0,0,255))
+	btn_back.setColor(RED)
+	btn_back.setHoverColor(LIME)
+	btn_back.setFontColor(BLUE)
 	clock = pygame.time.Clock()
-	background=pygame.image.load('Images/game1.jpg')
+	background=pygame.image.load('Images/game1/input_values.png')
 	
 	run = True
 	
 	while run:
-		DISPLAYSURF.blit(background,(0,0))
+		DISPLAY_SURF.blit(background,SCREEN_TOPLEFT)
 		mouse = pygame.mouse.get_pos()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -30,120 +33,125 @@ def compTbyNLM(DISPLAYSURF):
 				pygame.quit()
 				sys.exit()
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				if btn1.obj.collidepoint(mouse):
-					countInputs=1;	# countInputs is related to the y coordinate of the input text boxes
-					v1 = inputbox.ask(DISPLAYSURF, "Final Velocity, v",countInputs)
-					v2 = float (v1)
-					countInputs=countInputs+5;
-					a1 = inputbox.ask(DISPLAYSURF, "Acceleration, a",countInputs)
-					a2 = float (a1)
-					countInputs=countInputs+5;
-					u1 = inputbox.ask(DISPLAYSURF, "Initial Velocity, u",countInputs)			
-					u2 = float (u1)
-					if(a2==0):
-						errorScreen(DISPLAYSURF,"Acceleration cannot be zero in this case")
+				if rect_t1.collidepoint(mouse):
+					countInputs = 1;	# countInputs is related to the y coordinate of the input text boxes
+					final_velocity = inputbox.ask(DISPLAY_SURF, "Final Velocity, v",countInputs)
+					final_velocity = float (final_velocity)
+					countInputs = countInputs + 5;
+					acceleration = inputbox.ask(DISPLAY_SURF, "Acceleration, a",countInputs)
+					acceleration = float (acceleration)
+					countInputs = countInputs + 5;
+					initial_velocity = inputbox.ask(DISPLAY_SURF, "Initial Velocity, u",countInputs)			
+					initial_velocity = float (initial_velocity)
+					if(acceleration==0):
+						errorScreen.errorScreen(DISPLAY_SURF,"Acceleration cannot be zero in this case")
 						run = False
-					t1 = (v2 -u2)/a2
-					if(t1<0):
-						errorScreen(DISPLAYSURF,"Inconsistent data entered.(results to Negative time)")
+					time = (final_velocity -initial_velocity)/acceleration
+					if(time < 0):
+						errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data entered.(results to Negative time)")
 						run = False
-					s1 = u2*t1 + a2*t1*t1/2
-					t2 = str (t1)
+					displacement = initial_velocity*time + acceleration*time*time/2
+					
 					font = pygame.font.Font(None, 36)
-					text = font.render("The Time hence calculated is "+t2+" sec", 1, (255, 255, 255))
-					anim1(DISPLAYSURF,text,v2,u2,a2,t1,s1)
+					text = font.render("The Time hence calculated is "+ str(time) +" sec", 1, WHITE)
+					path = "Images/game1/Explanation/Calculate_T/G1/"
+					anim1(DISPLAY_SURF,text,final_velocity,initial_velocity,acceleration,time,displacement,path)
 					run = False
-				elif btn2.obj.collidepoint(mouse):
-					countInputs=1;	# countInputs is related to the y coordinate of the input text boxes
-					u1 = inputbox.ask(DISPLAYSURF, "Initial Velocity, u",countInputs)
-					u2 = float (u1)
-					countInputs=countInputs+5;
-					s1 = inputbox.ask(DISPLAYSURF, "Displacement, s",countInputs)
-					s2 = float (s1)
-					countInputs=countInputs+5;
-					a1 = inputbox.ask(DISPLAYSURF, "Acceleration, a",countInputs)
-					a2 = float (a1)
+				elif rect_t2.collidepoint(mouse):
+					countInputs = 1;	# countInputs is related to the y coordinate of the input text boxes
+					initial_velocity = inputbox.ask(DISPLAY_SURF, "Initial Velocity, u",countInputs)
+					initial_velocity = float (initial_velocity)
+					countInputs = countInputs + 5;
+					displacement = inputbox.ask(DISPLAY_SURF, "Displacement, s",countInputs)
+					displacement = float (displacement)
+					countInputs = countInputs + 5;
+					acceleration = inputbox.ask(DISPLAY_SURF, "Acceleration, a",countInputs)
+					acceleration = float (acceleration)
 					try :
-						v1 = math.sqrt(u2*u2 + 2*a2*s2)
+						final_velocity = math.sqrt(initial_velocity*initial_velocity + 2*acceleration*displacement)
 					except :
-						errorScreen(DISPLAYSURF,"Inconsistent data")
-					if(a2==0):
-						if (u2 == 0):
-							errorScreen(DISPLAYSURF,"Inconsistent data")
+						errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data")
+					if(acceleration==0):
+						if (initial_velocity == 0):
+							errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data")
 							run = False
 						else :
-							t1 = s2/u2
+							time = displacement/initial_velocity
 					else :
-						t1 = (v1 - u2)/a2
-					if(t1<0):
-						errorScreen(DISPLAYSURF,"Inconsistent data entered.(results to Negative time)")
+						time = (final_velocity - initial_velocity)/acceleration
+					if(time < 0):
+						errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data entered.(results to Negative time)")
 						run = False
-					t2 = str (t1)
+					
 					font = pygame.font.Font(None, 36)
-					text = font.render("The Time hence calculated is "+t2+" sec", 1, (255, 255, 255))
-					anim1(DISPLAYSURF,text,v1,u2,a2,t1,s2)
+					text = font.render("The Time hence calculated is "+ str(time) +" sec", 1, WHITE)
+					path = "Images/game1/Explanation/Calculate_T/G2/"
+					anim1(DISPLAY_SURF,text,final_velocity,initial_velocity,acceleration,time,displacement,path)
 					run = False
-				elif btn3.obj.collidepoint(mouse):
-					countInputs=1;	# countInputs is related to the y coordinate of the input text boxes
-					u1 = inputbox.ask(DISPLAYSURF, "Initiual Velocity, u",countInputs)
-					u2 = float (u1)
-					countInputs=countInputs+5;
-					s1 = inputbox.ask(DISPLAYSURF, "Displacement, s",countInputs)
-					s2 = float (s1)
-					countInputs=countInputs+5;
-					v1 = inputbox.ask(DISPLAYSURF, "Final Velocity, v",countInputs)
-					v2 = float (v1)
-					if(s2==0):
-						a1 = 0
-						t1 = 0
+				elif rect_t3.collidepoint(mouse):
+					countInputs = 1;	# countInputs is related to the y coordinate of the input text boxes
+					initial_velocity = inputbox.ask(DISPLAY_SURF, "Initiual Velocity, u",countInputs)
+					initial_velocity = float (initial_velocity)
+					countInputs = countInputs + 5;
+					displacement = inputbox.ask(DISPLAY_SURF, "Displacement, s",countInputs)
+					displacement = float (displacement)
+					countInputs = countInputs + 5;
+					final_velocity = inputbox.ask(DISPLAY_SURF, "Final Velocity, v",countInputs)
+					final_velocity = float (final_velocity)
+					if(displacement==0):
+						acceleration = 0
+						time = 0
 					else :
-						a1 = (v2*v2 - u2*u2)/2/s2
-						if(a1==0):
-							errorScreen(DISPLAYSURF,"Inconsistent data entered.(results to zero acceleration)")
+						acceleration = (final_velocity*final_velocity - initial_velocity*initial_velocity)/2/displacement
+						if(acceleration==0):
+							errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data entered.(results to zero acceleration)")
 							run = False
-						t1 = (v2 - u2)/a1
-						if(t1<0):
-							errorScreen(DISPLAYSURF,"Inconsistent data entered.(results to Negative time)")
+						time = (final_velocity - initial_velocity)/acceleration
+						if(time < 0):
+							errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data entered.(results to Negative time)")
 							run = False
-					t2 = str (t1)
+					
 					font = pygame.font.Font(None, 36)
-					text = font.render("The Time hence calculated is "+t2+" sec", 1, (255, 255, 255))
-					anim1(DISPLAYSURF,text,v2,u2,a1,t1,s2)
+					text = font.render("The Time hence calculated is "+ str(time) +" sec", 1, WHITE)
+					path = "Images/game1/Explanation/Calculate_T/G3/"
+					anim1(DISPLAY_SURF,text,final_velocity,initial_velocity,acceleration,time,displacement,path)
 					run = False
-				elif btn4.obj.collidepoint(mouse):
-					countInputs=1;	# countInputs is related to the y coordinate of the input text boxes
-					v1 = inputbox.ask(DISPLAYSURF, "Final Velocity, v",countInputs)
-					v2 = float (v1)
-					countInputs=countInputs+5;
-					s1 = inputbox.ask(DISPLAYSURF, "Displacement, s",countInputs)
-					s2 = float (s1)
-					countInputs=countInputs+5;
-					a1 = inputbox.ask(DISPLAYSURF, "Acceleration, a",countInputs)
-					a2 = float (a1)
-					u1 = math.sqrt(v2*v2 - 2*a2*s2)
-					if(a2==0):
-						if (v2 == 0):
-							errorScreen(DISPLAYSURF,"Inconsistent data")
+				elif rect_t4.collidepoint(mouse):
+					countInputs = 1;	# countInputs is related to the y coordinate of the input text boxes
+					final_velocity = inputbox.ask(DISPLAY_SURF, "Final Velocity, v",countInputs)
+					final_velocity = float (final_velocity)
+					countInputs = countInputs + 5;
+					displacement = inputbox.ask(DISPLAY_SURF, "Displacement, s",countInputs)
+					displacement = float (displacement)
+					countInputs = countInputs + 5;
+					acceleration = inputbox.ask(DISPLAY_SURF, "Acceleration, a",countInputs)
+					acceleration = float (acceleration)
+					initial_velocity = math.sqrt(final_velocity*final_velocity - 2*acceleration*displacement)
+					if(acceleration==0):
+						if (final_velocity == 0):
+							errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data")
 							run = False
 						else :
-							t1 = s2/v2
+							time = displacement/final_velocity
 					else :
-						t1 = (v1 - u2)/a2
-					if(t1<0):
-						errorScreen(DISPLAYSURF,"Inconsistent data entered.(results to Negative time)")
+						time = (final_velocity - initial_velocity)/acceleration
+					if(time < 0):
+						errorScreen.errorScreen(DISPLAY_SURF,"Inconsistent data entered.(results to Negative time)")
 						run = False
-					t2 = str (t1)
+					
 					font = pygame.font.Font(None, 36)
-					text = font.render("The Time hence calculated is "+t2+" sec", 1, (255, 255, 255))
-					anim1(DISPLAYSURF,text,v2,u1,a2,t1,s2)
+					text = font.render("The Time hence calculated is "+ str(time) +" sec", 1, WHITE)
+					path = "Images/game1/Explanation/Calculate_T/G4/"
+					anim1(DISPLAY_SURF,text,final_velocity,initial_velocity,acceleration,time,displacement,path)
 					run = False
 				elif btn_back.obj.collidepoint(mouse):
 					run = False
-		btn1.draw(DISPLAYSURF, mouse, (100,100,100,20), (125,103))
-		btn2.draw(DISPLAYSURF, mouse, (100,130,100,20), (125,133))
-		btn3.draw(DISPLAYSURF, mouse, (100,160,100,20), (125,163))
-		btn4.draw(DISPLAYSURF, mouse, (100,190,100,20), (125,193))
-		btn_back.draw(DISPLAYSURF,mouse,(550,10,45,20),(560,13))
+
+		rect_t1 = DISPLAY_SURF.blit(btn_t1,(125, 103))
+		rect_t2 = DISPLAY_SURF.blit(btn_t2,(125, 153))
+		rect_t3 = DISPLAY_SURF.blit(btn_t3,(125, 203))
+		rect_t4 = DISPLAY_SURF.blit(btn_t4,(125, 253))
+		btn_back.draw(DISPLAY_SURF,mouse,(550,10,45,20),(560,13))
 		pygame.display.update()
 		clock.tick(60)
 	print ("Exit from TbyNLM")
