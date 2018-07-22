@@ -37,7 +37,7 @@ def display_box(DISPLAY_SURF,countIn, message):
 	pygame.display.flip()
 	
 def ask(DISPLAY_SURF, question,countIn):
-	print "inside inputbox"
+	print ("inside inputbox")
 	try:
 		"ask(DISPLAY_SURF, question) -> answer"
 		pygame.font.init()
@@ -70,7 +70,7 @@ def ask(DISPLAY_SURF, question,countIn):
 		return
 		
 def ask_parallel(DISPLAY_SURF,question,road_val,numImages,path1,path2):
-	print "inside asl parallel of inputbox"
+	print ("inside asl parallel of inputbox")
 	current_string = []
 	display_box(DISPLAY_SURF,0, question + ": " + "".join(current_string))
 	i = 1
